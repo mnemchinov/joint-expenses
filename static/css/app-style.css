@@ -1,0 +1,29 @@
+body {
+    background-image: url(../images/background.png);
+    background-size: 100% 100%;
+    background-attachment: fixed;
+    background-position: center;
+    background-repeat: no-repeat;
+    transition: background .3s;
+}
+
+/*.input-group-text,*/
+/*.login-box .card,*/
+/*.selector .selector-filter,*/
+/*.selector select,*/
+/*.nav-tabs .nav-link.active,*/
+/*.nav-item.show .nav-link,*/
+/*.timeline>div>.timeline-item,*/
+/*.navbar,*/
+/*.card,*/
+/*.card .card,*/
+/*.content-wrapper,*/
+/*.main-sidebar,*/
+/*.main-footer*/
+/*{*/
+/*    background-color: rgba(0,0,0,.2);*/
+/*}*/
+
+/*.sidebar-open .main-sidebar, .sidebar-open .main-sidebar{*/
+/*    background: #343a40;*/
+/*}*/
