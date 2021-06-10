@@ -30,7 +30,9 @@ ALLOWED_HOSTS = [
     '127.0.0.1',
     '192.168.10.21',
     'sync-dev',
-    'sync-dev.voshod.local'
+    'sync-dev.voshod.local',
+    'mnemchinov.ru',
+    'www.mnemchinov.ru',
 ]
 
 # Application definition
