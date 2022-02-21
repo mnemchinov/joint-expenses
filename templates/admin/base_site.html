@@ -15,3 +15,14 @@
         {% endif %}
     {% endif %}
 {% endblock %}
+
+{% block extrajs %}
+    {{ block.super }}
+    <script type="text/javascript">
+        window.onload = function () {
+            $('#jazzy-navbar').css('margin-left', '0px');
+            $('.content-wrapper').css('margin-left', '0px');
+            $('.main-footer').css('margin-left', '0px');
+        };
+    </script>
+{% endblock %}

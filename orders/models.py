@@ -1,8 +1,15 @@
 from django.db import models
 from django.utils import timezone
 
-from orders.metadata import OrderStatuses
 from django.contrib.auth.models import User
+
+
+class OrderStatuses(models.IntegerChoices):
+    NEW = 0, 'Новый'
+    READY = 1, 'Готов'
+    DELIVERED = 2, 'Доставлен'
+    CANCELED = 3, 'Отменен'
+    __empty__ = '(Не известно)'
 
 
 class OrderPartner(models.Model):
