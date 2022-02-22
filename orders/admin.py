@@ -10,7 +10,7 @@ class TabularOrderPartner(admin.TabularInline):
 
 @admin.register(Order)
 class OrderAdmin(admin.ModelAdmin):
-    list_display = ('representation', 'status', 'opening_balance',
+    list_display = ('__str__', 'status', 'opening_balance',
                     'amount', 'final_balance')
     inlines = (TabularOrderPartner,)
     list_filter = ('date', 'is_deleted', 'status', 'partners')
