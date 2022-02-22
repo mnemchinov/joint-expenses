@@ -22,5 +22,4 @@ urlpatterns = [
     static_urls,
     re_path(r'^$', RedirectView.as_view(url='admin/orders/order/')),
     re_path(r'^admin/?', admin.site.urls),
-    re_path(r'^admin/?', admin.site.urls),
 ]
