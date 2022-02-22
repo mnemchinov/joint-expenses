@@ -1,0 +1,8 @@
+[packages]
+django-jazzmin = "==2.4.9"
+Django = "==4.0.2"
+
+[dev-packages]
+
+[requires]
+python_version = "3.9"
