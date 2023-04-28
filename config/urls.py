@@ -7,9 +7,9 @@ from django.views.generic import RedirectView
 from django.views.static import serve
 
 
-admin.site.site_title = 'Заказы на кофе'
-admin.site.site_header = 'Кофе в офис'
-admin.site.index_title = 'Заказы на кофе в офис'
+admin.site.site_title = 'Совместные заказы'
+admin.site.site_header = 'Совместные заказы'
+admin.site.index_title = 'Совместные заказы'
 
 static_urls = re_path(
     r'^%s(?P<path>.*)$' % re.escape(settings.STATIC_URL.lstrip('/')),

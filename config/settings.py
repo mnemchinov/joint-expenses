@@ -16,6 +16,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'orders.apps.OrdersConfig',
+    'django_jsonform',
+    'import_export',
 ]
 
 MIDDLEWARE = [
@@ -81,13 +83,16 @@ MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'live-static', 'media-root')
 
 JAZZMIN_SETTINGS = {
-    # title of the window (Will default to current_admin_site.site_title if absent or None)
-    'site_title': 'Заказы на кофе в офис',
+    # title of the window (Will default to current_admin_site.site_title if
+    # absent or None)
+    'site_title': 'Совместные заказы',
 
-    # Title on the brand, and login screen (19 chars max) (defaults to current_admin_site.site_header if absent or None)
-    'site_header': 'Кофе в офис!',
+    # Title on the brand, and login screen (19 chars max) (defaults to
+    # current_admin_site.site_header if absent or None)
+    'site_header': 'Совместные заказы',
 
-    # square logo to use for your site, must be present in static files, used for favicon and brand on top left
+    # square logo to use for your site, must be present in static files,
+    # used for favicon and brand on top left
     'site_logo': 'images/coffee-beans.png',
 
     # Welcome text on the login screen
@@ -96,7 +101,8 @@ JAZZMIN_SETTINGS = {
     # Copyright on the footer
     'copyright': '',
 
-    # The model admin to search from the search bar, search bar omitted if excluded
+    # The model admin to search from the search bar, search bar omitted if
+    # excluded
     'search_model': 'orders.Order',
 
     # Field name on user model that contains avatar image
@@ -108,7 +114,7 @@ JAZZMIN_SETTINGS = {
 
     # Links to put along the top menu
     'topmenu_links': [
-        {'name': 'Кофе в офис!',  'url': 'admin:index'},
+        {'name': 'Наши заказы',  'url': 'admin:index'},
         # {'model': 'orders.Order'},
     ],
 
@@ -116,7 +122,8 @@ JAZZMIN_SETTINGS = {
     # User Menu #
     #############
 
-    # Additional links to include in the user menu on the top right ('app' url type is not allowed)
+    # Additional links to include in the user menu on the top right ('app'
+    # url type is not allowed)
     'usermenu_links': [{'model': 'auth.user'}],
 
     #############
@@ -127,7 +134,7 @@ JAZZMIN_SETTINGS = {
     'show_sidebar': False,
 
     # Whether to aut expand the menu
-    'navigation_expanded': True,
+    'navigation_expanded': False,
 
     # Hide these apps when generating side menu e.g (auth)
     'hide_apps': [],
@@ -135,14 +142,15 @@ JAZZMIN_SETTINGS = {
     # Hide these models when generating side menu (e.g auth.user)
     'hide_models': [],
 
-    # List of apps (and/or models) to base side menu ordering off of (does not need to contain all apps/models)
+    # List of apps (and/or models) to base side menu ordering off of (does
+    # not need to contain all apps/models)
     'order_with_respect_to': ['orders', 'auth'],
 
     # Custom links to append to app groups, keyed on app name
     'custom_links': {},
 
-    # Custom icons for side menu apps/models See https://fontawesome.com/icons?d=gallery&m=free
-    # for a list of icon classes
+    # Custom icons for side menu apps/models See
+    # https://fontawesome.com/icons?d=gallery&m=free for a list of icon classes
     'icons': {
         'auth': 'fas fa-users-cog',
         'auth.user': 'fas fa-user',
@@ -158,7 +166,7 @@ JAZZMIN_SETTINGS = {
     # Related Modal #
     #################
     # Use modals instead of popups
-    'related_modal_active': True,
+    'related_modal_active': False,
 
     #############
     # UI Tweaks #
@@ -169,15 +177,9 @@ JAZZMIN_SETTINGS = {
     # Whether to show the UI customizer on the sidebar
     'show_ui_builder': False,
 
-    ###############
-    # Change view #
-    ###############
-    # Render out the change view as a single form, or in tabs, current options are
-    # - single
-    # - horizontal_tabs (default)
-    # - vertical_tabs
-    # - collapsible
-    # - carousel
+    # ############## Change view # ############## Render out the change view
+    # as a single form, or in tabs, current options are - single -
+    # horizontal_tabs (default) - vertical_tabs - collapsible - carousel
     'changeform_format': 'horizontal_tabs',
     # override change forms on a per modeladmin basis
     'changeform_format_overrides': {

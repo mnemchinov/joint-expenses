@@ -1,11 +1,44 @@
+from functools import lru_cache
+
 from django.db import models
 from django.utils import timezone
 
 from django.contrib.auth.models import User
+from django_jsonform.models.fields import JSONField
+
+
+@lru_cache
+def order_content_schema() -> dict:
+    schema = {
+        "type": "array",
+        "title": "Товары",
+        "items": {
+            "type": "object",
+            "properties": {
+                "product": {
+                    "type": "string",
+                    "title": "Наименование"
+                },
+                "quantity": {
+                    "type": "number",
+                    "title": "Количество"
+                },
+                "price": {
+                    "type": "integer",
+                    "title": "Цена"
+                },
+                "amount": {
+                    "type": "integer",
+                    "title": "Сумма"
+                }
+            }
+        }
+    }
+    return schema
 
 
 class OrderStatuses(models.IntegerChoices):
-    NEW = 0, 'Новый'
+    NEW = 0, 'Распределение'
     READY = 1, 'Готов'
     DELIVERED = 2, 'Доставлен'
     CANCELED = 3, 'Отменен'
@@ -14,7 +47,6 @@ class OrderStatuses(models.IntegerChoices):
 
 class OrderPartner(models.Model):
     # region Fields:...
-
     partner = models.ForeignKey(
         User,
         on_delete=models.CASCADE,
@@ -38,11 +70,9 @@ class OrderPartner(models.Model):
         decimal_places=2,
         default=0
     )
-
     # endregion
 
     class Meta:
-        db_table = 'order_partners'
         verbose_name = 'Участник заказа'
         verbose_name_plural = 'Участники заказа'
         unique_together = [('partner', 'order')]
@@ -54,8 +84,9 @@ class OrderPartner(models.Model):
 
 
 class Order(models.Model):
-    # region Fields:...
+    objects = models.Manager()
 
+    # region Fields:...
     id = models.AutoField(
         verbose_name='Номер',
         primary_key=True
@@ -115,62 +146,25 @@ class Order(models.Model):
         verbose_name='Предыдущий заказ',
         blank=True,
         null=True,
+        default=objects.last,
         on_delete=models.SET_NULL,
     )
-    content = models.TextField(
-        verbose_name='Содержимое',
+    content = JSONField(
+        verbose_name='Содержание',
+        help_text='Список товаров заказа',
         blank=True,
-        default="",
+        default=list,
+        schema=order_content_schema,
     )
     # endregion
 
-    @property
-    def representation(self):
-        date = self.date.strftime('%d.%m.%Y %H:%M:%S')
-        representation = f"Заказ №{self.id} от {date}"
-
-        return representation
-
     class Meta:
-        db_table = 'orders'
         verbose_name = 'Заказ'
         verbose_name_plural = 'Заказы'
         ordering = ['-date']
 
     def __str__(self):
-        return self.representation
+        date = self.date.strftime('%d.%m.%Y %H:%M:%S')
+        result = f"Заказ №{self.id} от {date}"
 
-    def save(self, *args, **kwargs):
-        super().save(*args, **kwargs)
-        if self.status == OrderStatuses.NEW and not self.is_deleted:
-            self.calculate_partners()
-            super().save(*args, **kwargs)
-
-    def calculate_partners(self):
-        prev_order = self.previous_order
-        partners = OrderPartner.objects.filter(order=self)
-        partner_count = partners.count()
-        apportion_amount = self.amount
-        debit_total = 0
-
-        if partner_count == 0 and prev_order is not None:
-            prev_partners = OrderPartner.objects.filter(order=prev_order)
-            partner_count = prev_partners.count()
-            partners_credit = apportion_amount / partner_count
-            for partner in prev_partners:
-                new_item = OrderPartner(
-                    order=self,
-                    partner=partner.partner,
-                    credit=partners_credit
-                )
-                new_item.save()
-        else:
-            partners_credit = apportion_amount / partner_count
-            for partner in partners:
-                debit_total += partner.debit
-                if partner.credit == 0:
-                    partner.credit = partners_credit
-                    partner.save()
-
-        self.debit = debit_total
-        self.final_balance = self.opening_balance + self.amount - self.debit
+        return result

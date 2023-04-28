@@ -1,5 +1,6 @@
 from django.contrib import admin
 from .models import *
+from import_export.admin import ImportExportModelAdmin
 
 
 class TabularOrderPartner(admin.TabularInline):
@@ -9,7 +10,7 @@ class TabularOrderPartner(admin.TabularInline):
 
 
 @admin.register(Order)
-class OrderAdmin(admin.ModelAdmin):
+class OrderAdmin(ImportExportModelAdmin):
     list_display = ('__str__', 'status', 'opening_balance',
                     'amount', 'final_balance')
     inlines = (TabularOrderPartner,)
@@ -27,22 +28,6 @@ class OrderAdmin(admin.ModelAdmin):
             'fields': ('content',)
         }),
     )
-
-    def get_changeform_initial_data(self, request):
-        initial_data = {
-            'previous_order': None,
-            'opening_balance': 0,
-        }
-        previous_order = Order.objects.filter(
-            status=OrderStatuses.DELIVERED,
-            is_deleted=False
-        ).first()
-
-        if previous_order is not None:
-            initial_data['previous_order'] = previous_order
-            initial_data['opening_balance'] = previous_order.final_balance
-
-        return initial_data
 
 
 
